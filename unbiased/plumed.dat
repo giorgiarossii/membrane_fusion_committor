@@ -1,0 +1,58 @@
+LOAD FILE=/home/grossi1-iit.local/giorgia/membrane/committor/template/coordination_multi.so
+LOAD FILE=/home/grossi1-iit.local/giorgia/membrane/committor/template/MemFusionP_NP.so
+
+# =================================================== INDEX FILES ===================================================
+
+NP: GROUP NDX_FILE=index.ndx NDX_GROUP=NP
+tails: GROUP NDX_FILE=index.ndx NDX_GROUP=tails
+innerheads: GROUP NDX_FILE=index.ndx NDX_GROUP=innerheads
+mus: GROUP NDX_FILE=index.ndx NDX_GROUP=MUS
+mus4: GROUP NDX_FILE=index.ndx NDX_GROUP=MUS4
+
+com: CENTER ATOMS=NP
+
+memFusion: MEMFUSIONP_G NP=com TAILS=tails NSMEM=20 DSMEM=0.1 ZSHIFT=1.1 RCYLMEM=2.0
+
+c_mus4: COORDINATION GROUPA=mus4 GROUPB=innerheads R_0=0.8 NLIST NL_CUTOFF=1.1 NL_STRIDE=1
+
+# =================================================== COORDINATION ===================================================
+
+c_tails: COORDINATION_MULTI GROUPA=com GROUPB=tails D_0=0.0 R_0=1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3.0,3.1,3.2,3.3 NN=50 MM=100 D_MAX=3.6 NLIST NL_CUTOFF=3.8 NL_STRIDE=1 N_OUT=18 Z_SHIFT=1 XY_RADIUS=2
+
+c_0: CUSTOM VAR=x,y ARG=c_tails.0,c_tails.1 FUNC=y-x PERIODIC=NO
+c_1: CUSTOM VAR=x,y ARG=c_tails.1,c_tails.2 FUNC=y-x PERIODIC=NO
+c_2: CUSTOM VAR=x,y ARG=c_tails.2,c_tails.3 FUNC=y-x PERIODIC=NO
+c_3: CUSTOM VAR=x,y ARG=c_tails.3,c_tails.4 FUNC=y-x PERIODIC=NO
+c_4: CUSTOM VAR=x,y ARG=c_tails.4,c_tails.5 FUNC=y-x PERIODIC=NO
+c_5: CUSTOM VAR=x,y ARG=c_tails.5,c_tails.6 FUNC=y-x PERIODIC=NO
+c_6: CUSTOM VAR=x,y ARG=c_tails.6,c_tails.7 FUNC=y-x PERIODIC=NO
+c_7: CUSTOM VAR=x,y ARG=c_tails.7,c_tails.8 FUNC=y-x PERIODIC=NO
+c_8: CUSTOM VAR=x,y ARG=c_tails.8,c_tails.9 FUNC=y-x PERIODIC=NO
+c_9: CUSTOM VAR=x,y ARG=c_tails.9,c_tails.10 FUNC=y-x PERIODIC=NO
+c_10: CUSTOM VAR=x,y ARG=c_tails.10,c_tails.11 FUNC=y-x PERIODIC=NO
+c_11: CUSTOM VAR=x,y ARG=c_tails.11,c_tails.12 FUNC=y-x PERIODIC=NO
+c_12: CUSTOM VAR=x,y ARG=c_tails.12,c_tails.13 FUNC=y-x PERIODIC=NO
+c_13: CUSTOM VAR=x,y ARG=c_tails.13,c_tails.14 FUNC=y-x PERIODIC=NO
+c_14: CUSTOM VAR=x,y ARG=c_tails.14,c_tails.15 FUNC=y-x PERIODIC=NO
+c_15: CUSTOM VAR=x,y ARG=c_tails.15,c_tails.16 FUNC=y-x PERIODIC=NO
+c_16: CUSTOM VAR=x,y ARG=c_tails.16,c_tails.17 FUNC=y-x PERIODIC=NO
+
+s_0: CUSTOM VAR=r ARG=c_0 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_1: CUSTOM VAR=r ARG=c_1 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_2: CUSTOM VAR=r ARG=c_2 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_3: CUSTOM VAR=r ARG=c_3 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_4: CUSTOM VAR=r ARG=c_4 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_5: CUSTOM VAR=r ARG=c_5 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_6: CUSTOM VAR=r ARG=c_6 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_7: CUSTOM VAR=r ARG=c_7 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_8: CUSTOM VAR=r ARG=c_8 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_9: CUSTOM VAR=r ARG=c_9 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_10: CUSTOM VAR=r ARG=c_10 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_11: CUSTOM VAR=r ARG=c_11 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_12: CUSTOM VAR=r ARG=c_12 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_13: CUSTOM VAR=r ARG=c_13 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_14: CUSTOM VAR=r ARG=c_14 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_15: CUSTOM VAR=r ARG=c_15 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+s_16: CUSTOM VAR=r ARG=c_16 FUNC=1-(1-(r+0.7)^12)/(1-(r+0.7)^14) PERIODIC=NO
+
+PRINT ARG=* FILE=COLVAR STRIDE=1

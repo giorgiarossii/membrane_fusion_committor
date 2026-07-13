@@ -1,0 +1,21 @@
+#include "martini_v2.2.itp"
+#include "DOPC_restrained.itp"
+#include "Au_restrained.itp"
+#include "martini_v2.0_ions.itp"
+
+[ system ]
+; name
+INSANE! Membrane UpperLeaflet>DOPC:CHOL=67.0:33.0 LowerLeaflet>DOPC:CHOL=67.0:33.0
+
+[ molecules ]
+; name  number
+DOPC           947
+DOPC           947
+DOPC           947
+DOPC           947
+AU_OT_MUS        1
+W              45242
+NA+            450
+W              50
+CL-            450
+NA+            40

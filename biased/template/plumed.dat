@@ -1,0 +1,79 @@
+LOAD FILE=coordination_multi.so
+LOAD FILE=MemFusionP_NP.so
+LOAD FILE=pytorch_model_bias.so
+
+# =================================================== INDEX FILES ==================================================
+
+NP: GROUP NDX_FILE=index.ndx NDX_GROUP=NP
+tails: GROUP NDX_FILE=index.ndx NDX_GROUP=tails
+innerheads: GROUP NDX_FILE=index.ndx NDX_GROUP=innerheads
+mus4: GROUP NDX_FILE=index.ndx NDX_GROUP=MUS4
+
+com: CENTER ATOMS=NP
+
+# =================================================== MEMFUSION ====================================================
+
+memFusion: MEMFUSIONP_NP NP=com TAILS=tails NSMEM=20 DSMEM=0.1 ZSHIFT=1.1 RCYLMEM=2.0
+
+# ============================================== COORDINATION LIGANDS ==================================================
+
+c_mus4: COORDINATION GROUPA=mus4 GROUPB=innerheads R_0=0.8 NLIST NL_CUTOFF=1.1 NL_STRIDE=1
+
+# =============================================== COORDINATION TAILS ===================================================
+
+c_tails: COORDINATION_MULTI GROUPA=com GROUPB=tails D_0=0.0 R_0=1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3.0,3.1,3.2,3.3 NN=50 MM=100 D_MAX=3.6 NLIST NL_CUTOFF=3.8 NL_STRIDE=10 N_OUT=18 Z_SHIFT=1 XY_RADIUS=2
+
+c_0: CUSTOM VAR=x,y ARG=c_tails.0,c_tails.1 FUNC=y-x PERIODIC=NO
+c_1: CUSTOM VAR=x,y ARG=c_tails.1,c_tails.2 FUNC=y-x PERIODIC=NO
+c_2: CUSTOM VAR=x,y ARG=c_tails.2,c_tails.3 FUNC=y-x PERIODIC=NO
+c_3: CUSTOM VAR=x,y ARG=c_tails.3,c_tails.4 FUNC=y-x PERIODIC=NO
+c_4: CUSTOM VAR=x,y ARG=c_tails.4,c_tails.5 FUNC=y-x PERIODIC=NO
+c_5: CUSTOM VAR=x,y ARG=c_tails.5,c_tails.6 FUNC=y-x PERIODIC=NO
+c_6: CUSTOM VAR=x,y ARG=c_tails.6,c_tails.7 FUNC=y-x PERIODIC=NO
+c_7: CUSTOM VAR=x,y ARG=c_tails.7,c_tails.8 FUNC=y-x PERIODIC=NO
+c_8: CUSTOM VAR=x,y ARG=c_tails.8,c_tails.9 FUNC=y-x PERIODIC=NO
+c_9: CUSTOM VAR=x,y ARG=c_tails.9,c_tails.10 FUNC=y-x PERIODIC=NO
+c_10: CUSTOM VAR=x,y ARG=c_tails.10,c_tails.11 FUNC=y-x PERIODIC=NO
+c_11: CUSTOM VAR=x,y ARG=c_tails.11,c_tails.12 FUNC=y-x PERIODIC=NO
+c_12: CUSTOM VAR=x,y ARG=c_tails.12,c_tails.13 FUNC=y-x PERIODIC=NO
+c_13: CUSTOM VAR=x,y ARG=c_tails.13,c_tails.14 FUNC=y-x PERIODIC=NO
+c_14: CUSTOM VAR=x,y ARG=c_tails.14,c_tails.15 FUNC=y-x PERIODIC=NO
+c_15: CUSTOM VAR=x,y ARG=c_tails.15,c_tails.16 FUNC=y-x PERIODIC=NO
+c_16: CUSTOM VAR=x,y ARG=c_tails.16,c_tails.17 FUNC=y-x PERIODIC=NO
+
+
+# =============================================== WALL ===================================================
+
+lwall: LOWER_WALLS ARG=c_mus4 AT=70 KAPPA=1000
+
+# ============================================= COMMITTOR ===============================================
+
+PYTORCH_MODEL_BIAS ...
+    LABEL=model
+    FILE=/home/grossi1-iit.local/giorgia/membrane/committor/models/model_0_z.pt  
+    ARG=c_0,c_1,c_2,c_3,c_4,c_5,c_6,c_7,c_8,c_9,c_10,c_11,c_12,c_13,c_14,c_15,c_16 
+    LAMBDA=20
+    BETA=0.4
+    EPSILON=1
+    SIGMOID_P=3
+    USE_Q_FOR_BIAS
+...
+
+potential: BIASVALUE ARG=model.kbias
+
+# =============================================== OPES ===============================================
+
+
+OPES_METAD_EXPLORE ...
+	LABEL=opes
+	ARG=model.z
+	PACE=500 
+	SIGMA=0.02
+	BARRIER=30 
+	TEMP=310 
+        #STATE_RFILE=State.data
+        STATE_WFILE=State.data
+	STATE_WSTRIDE=500*100
+...
+
+PRINT STRIDE=500 FILE=COLVAR ARG=*
