@@ -1,26 +1,33 @@
 # Committor-based enhanced sampling of NP-mediated stalk formation
 
-Supporting material for 'Paper Title' by Giorgia Rossi, Enrico Trizio, Davide Bochicchio, Giulia Rossi, and Michele Parrinello.
+Supporting material for ["Let's Stalk About Membranes: Committor-Based Enhanced Sampling of Stalk Formation"](https://arxiv.org/abs/2607.20122) by Giorgia Rossi, Enrico Trizio, Davide Bochicchio, Giulia Rossi, and Michele Parrinello.
 
 ## Contents
 
-- `biased/`  
-  COLVAR files generated during the iterative biased simulations.
+- `data/`
+  - `biased/`: COLVAR files generated during the iterative biased simulations.
+  - `unbiased/`: data obtained from unbiased simulations initiated from the metastable basins.
+  - `models/`: trained committor models used during the different iterations.
+  - `training/training_example.ipynb`: example notebook showing how to train the committor model.
 
-  - `biased/template/`  
-    Files required to reproduce the biased simulations, including:
-    1. code for committor-based biasing (pytorch_model_bias.cpp)
-    3. code for fast calculation of shell-coordination descriptors (coordination_multi.cpp)
-    4. adapted chain-coordinate collective variable (MemFusionP_NP.cpp)
+- `plumed_inputs/`
+  - PLUMED input and supporting files prepared for PLUMED-NEST.
+  - Custom code for committor-based biasing (`pytorch_model_bias.cpp`).
+  - Custom code for the shell-coordination descriptors (`coordination_multi.cpp`).
+  - Adapted membrane-fusion collective variable (`MemFusionP_NP.cpp`).
+  - Trained model, index, and simulation input files.
 
-- `unbiased/`
-  Data obtained from unbiased simulations initiated from the metastable basins.
+## PLUMED input
 
-- `models/`  
-  Trained committor models used during the different iterations.
+The input was developed and tested with PLUMED 2.9.4 compiled with LibTorch support. The custom actions are compiled automatically using `LOAD FILE=*.cpp`.
 
-- `training_example.ipynb`  
-  Example notebook showing how to train the committor model.
+To test the input:
 
-## NOTE 
-For an updated version of the code and tutorials, also on other machine learning collective variables, check our [mlcolvar library](https://github.com/luigibonati/mlcolvar)
+```bash
+cd plumed_inputs/biased
+plumed driver --natoms 100000 --parse-only --kt 2.49 --plumed plumed.dat
+```
+
+## Note
+
+For updated code and tutorials on machine-learning collective variables, see the [mlcolvar library](https://github.com/luigibonati/mlcolvar).
