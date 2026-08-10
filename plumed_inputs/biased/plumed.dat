@@ -1,6 +1,6 @@
-LOAD FILE=coordination_multi.so
-LOAD FILE=MemFusionP_NP.so
-LOAD FILE=pytorch_model_bias.so
+LOAD FILE=coordination_multi.cpp
+LOAD FILE=MemFusionP_NP.cpp
+LOAD FILE=pytorch_model_bias.cpp
 
 # =================================================== INDEX FILES ==================================================
 
@@ -50,7 +50,7 @@ lwall: LOWER_WALLS ARG=c_mus4 AT=70 KAPPA=1000
 
 PYTORCH_MODEL_BIAS ...
     LABEL=model
-    FILE=/home/grossi1-iit.local/giorgia/membrane/committor/models/model_0_z.pt  
+    FILE=model_0_z.pt 
     ARG=c_0,c_1,c_2,c_3,c_4,c_5,c_6,c_7,c_8,c_9,c_10,c_11,c_12,c_13,c_14,c_15,c_16 
     LAMBDA=20
     BETA=0.4
