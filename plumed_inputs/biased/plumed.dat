@@ -2,8 +2,6 @@ LOAD FILE=coordination_multi.cpp
 LOAD FILE=MemFusionP_NP.cpp
 LOAD FILE=pytorch_model_bias.cpp
 
-# =================================================== INDEX FILES ==================================================
-
 NP: GROUP NDX_FILE=index.ndx NDX_GROUP=NP
 tails: GROUP NDX_FILE=index.ndx NDX_GROUP=tails
 innerheads: GROUP NDX_FILE=index.ndx NDX_GROUP=innerheads
@@ -11,15 +9,15 @@ mus4: GROUP NDX_FILE=index.ndx NDX_GROUP=MUS4
 
 com: CENTER ATOMS=NP
 
-# =================================================== MEMFUSION ====================================================
+# Chain coordinate value
 
 memFusion: MEMFUSIONP_NP NP=com TAILS=tails NSMEM=20 DSMEM=0.1 ZSHIFT=1.1 RCYLMEM=2.0
 
-# ============================================== COORDINATION LIGANDS ==================================================
+# Ligand coordination numbers
 
 c_mus4: COORDINATION GROUPA=mus4 GROUPB=innerheads R_0=0.8 NLIST NL_CUTOFF=1.1 NL_STRIDE=1
 
-# =============================================== COORDINATION TAILS ===================================================
+# Lipid tail coordination numbers in concentrical spherical shells
 
 c_tails: COORDINATION_MULTI GROUPA=com GROUPB=tails D_0=0.0 R_0=1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,3.0,3.1,3.2,3.3 NN=50 MM=100 D_MAX=3.6 NLIST NL_CUTOFF=3.8 NL_STRIDE=10 N_OUT=18 Z_SHIFT=1 XY_RADIUS=2
 
@@ -42,11 +40,11 @@ c_15: CUSTOM VAR=x,y ARG=c_tails.15,c_tails.16 FUNC=y-x PERIODIC=NO
 c_16: CUSTOM VAR=x,y ARG=c_tails.16,c_tails.17 FUNC=y-x PERIODIC=NO
 
 
-# =============================================== WALL ===================================================
+# Lower wall on ligan coordination number
 
 lwall: LOWER_WALLS ARG=c_mus4 AT=70 KAPPA=1000
 
-# ============================================= COMMITTOR ===============================================
+# Committor bias
 
 PYTORCH_MODEL_BIAS ...
     LABEL=model
@@ -61,8 +59,7 @@ PYTORCH_MODEL_BIAS ...
 
 potential: BIASVALUE ARG=model.kbias
 
-# =============================================== OPES ===============================================
-
+# Opes bias
 
 OPES_METAD_EXPLORE ...
 	LABEL=opes
